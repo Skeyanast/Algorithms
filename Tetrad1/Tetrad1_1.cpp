@@ -121,6 +121,7 @@ bool searchNode(int input, Node* top) {
 	else return false;
 }
 
+/*
 struct Node* parentNode(int input, Node* top) {
 	// Внутренняя функция
 	// Вход: значение потомка искомого элемента
@@ -137,7 +138,7 @@ struct Node* parentNode(int input, Node* top) {
 		}
 	}
 }
-/*
+
 struct Node* delNode(int input, Node* top) {
 	// Пользовательская функция
 	// Вход: значение удаляемого узла, название дерева
@@ -166,6 +167,7 @@ struct Node* delNode(int input, Node* top) {
 	}
 }
 */
+
 void WelcomeUser() {
 	// Внутренняя функция
 	// Вход: -
