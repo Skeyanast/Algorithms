@@ -10,7 +10,7 @@ struct Node {
 	Node* right;
 };
 
-struct Node* addNode(int input, Node* top) {
+Node* addNode(int input, Node* top) {
 	// Пользовательская функция
 	// Вход: значение узла, название дерева
 	// Выход: создается структура нового узла
@@ -121,52 +121,50 @@ bool searchNode(int input, Node* top) {
 	else return false;
 }
 
-/*
-struct Node* parentNode(int input, Node* top) {
-	// Внутренняя функция
-	// Вход: значение потомка искомого элемента
-	// Выход: узел родителя заданного элемента
-	if (top != nullptr) {
-		if ((top->left->value == input) || (top->right->value == input)) {
-			return top;
-		}
-		else if (input < top->value) {
-			return parentNode(input, top->left);
-		}
-		else {
-			return parentNode(input, top->right);
-		}
-	}
-}
-
-struct Node* delNode(int input, Node* top) {
+Node* delNode(int input, Node* top) {
 	// Пользовательская функция
 	// Вход: значение удаляемого узла, название дерева
 	// Выход: 
-	if (searchNode(input, top)) {
-		Node* parent = parentNode(input, top);
-		if (parent->left->value == input) {
-			Node* erasable = nullptr;
-			erasable = parent->left;
-			if (erasable->left == nullptr && erasable->right == nullptr) {
-				delete erasable;
-				parent->left = nullptr;
-			}
+	if (top == nullptr) {
+		return top;
+	}
+	if (input == top->value) {
+		Node* temp = new Node;
+		temp = nullptr;
+		if (top->right == nullptr) {
+			temp = top->left;
 		}
 		else {
-			Node* erasable = nullptr;
-			erasable = parent->right;
-			if (erasable->left == nullptr && erasable->right == nullptr) {
-				delete erasable;
-				parent->right = nullptr;
+			Node* ptr = new Node;
+			ptr = top->right;
+			if (ptr->left == nullptr) {
+				ptr->left = top->left;
+				temp = ptr;
+			}
+			else {
+				Node* pmin = new Node;
+				pmin = ptr->left;
+				while (pmin->left != nullptr) {
+					ptr = pmin;
+					pmin = ptr->left;
+				}
+				ptr->left = pmin->right;
+				pmin->left = top->left;
+				pmin->right = top->right;
+				temp = pmin;
 			}
 		}
+		delete top;
+		return temp;
+	}
+	else if (input < top->value) {
+		top->left = delNode(input, top->left);
 	}
 	else {
-		cout << "Элемента с указанным значение не найдено!" << endl;
+		top->right = delNode(input, top->right);
 	}
+	return top;
 }
-*/
 
 void WelcomeUser() {
 	// Внутренняя функция
@@ -190,7 +188,7 @@ void FuncSelection(int choice, Node* tree) {
 	switch (choice) {
 	case 1:
 		cout << "Выбрано: Добавление элементов в дерево" << endl;
-		cout << "Введите количество узлов: ";
+		cout << "Сколько вы хотите добавить узлов? ";
 		int amount;
 		cin >> amount;
 		for (int i = 0; i < amount; i++) {
@@ -214,12 +212,12 @@ void FuncSelection(int choice, Node* tree) {
 		break;
 	case 4:
 		cout << "Выбрано: Поиск элемента в дереве" << endl;
-		bool exist;
+		bool find;
 		cout << "Введите значение искомого узла: ";
 		int val;
 		cin >> val;
-		exist = searchNode(val, tree);
-		if (exist) {
+		find = searchNode(val, tree);
+		if (find) {
 			cout << "Искомый узел найден" << endl;
 		}
 		else {
@@ -228,7 +226,18 @@ void FuncSelection(int choice, Node* tree) {
 		break;
 	case 5:
 		cout << "Выбрано: Удаление элемента из дерева" << endl;
-		cout << "Пока не реализовано :)" << endl;
+		bool exist;
+		cout << "Введите значение удаляемого узла: ";
+		int mass;
+		cin >> mass;
+		exist = searchNode(mass, tree);
+		if (exist) {
+			tree = delNode(mass, tree);
+			cout << "Узел успешно удален" << endl;
+		}
+		else {
+			cout << "Указанный узел не найден" << endl;
+		}
 		break;
 	case 6:
 		cout << "Выбрано: Удаление дерева и завершение программы" << endl;
@@ -246,7 +255,8 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 		
-	Node* root = nullptr;
+	Node* root = new Node;
+	root = nullptr;
 	cout << "Программа для работы с деревьями двоичного поиска" << endl;
 	cout << "Задайте значение корня дерева:" << endl;
 	int rtvl;
