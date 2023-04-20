@@ -14,7 +14,7 @@ struct Node {
 Node* addNode(int input, Node* top) {
 	// Пользовательская функция
 	// Вход: значение узла, название дерева
-	// Выход: создается структура нового узла
+	// Выход: добавляется структура нового узла
 	if (top == nullptr) {
 		top = new Node;
 		top->value = input;
@@ -37,7 +37,6 @@ Node* addNode(int input, Node* top) {
 int depthTreeSys(int counter, Node* top) {
 	// Внутренняя функция
 	// Вход: 1, название дерева
-	// Выход: глубина дерева
 	if (top != nullptr) {
 		if (top->left == nullptr && top->right == nullptr) {
 			return counter;
@@ -57,13 +56,12 @@ int depthTreeSys(int counter, Node* top) {
 
 int depthTree(Node* top) {
 	// Пользовательская функция
-	// Вход: название дерева
-	// Выход: глубина дерева
 	int counter = 1;
 	return depthTreeSys(counter, top);
 }
 
 int depthNodeSys(int input, int counter, Node* top)
+	// Внутренняя функция
 {
 	if (top != nullptr) {
 		if (input < top->value) {
@@ -80,12 +78,14 @@ int depthNodeSys(int input, int counter, Node* top)
 }
 
 int depthNode(int input, Node* top)
+	// Пользовательская функция определения глубины узла
 {
 	int counter = 1;
 	return depthNodeSys(input, counter, top);
 }
 
 void spaceprinter(int space)
+	// Внутренняя функция для visualprintTreeSys
 {
 	if (space > 1) {
 		for (int i = 1; i < space; i++) {
@@ -100,6 +100,7 @@ void spaceprinter(int space)
 }
 
 void visualprintTreeSys(Node* top, int level)
+	// Внутренняя функция для visualprintTree
 {
 	if (top != nullptr) {
 		if (level > 1) {
@@ -118,6 +119,7 @@ void visualprintTreeSys(Node* top, int level)
 }
 
 void visualprintTree(Node* top)
+	//Пользовательская функция визуального вывода дерева :)
 {
 	int level = 1;
 	visualprintTreeSys(top, level);
@@ -157,8 +159,6 @@ void printTree(char method, Node* top) {
 
 void delTree(Node* top) {
 	// Внутренняя функция
-	// Вход: название дерева
-	// Выход: удаление дерева
 	if (top != nullptr) {
 		if (top->left != nullptr) delTree(top->left);
 		if (top->right != nullptr) delTree(top->right);
@@ -168,8 +168,6 @@ void delTree(Node* top) {
 
 bool searchNode(int input, Node* top) {
 	// Пользовательская функция
-	// Вход: значение искомого узла
-	// Выход: логическое значение
 	if (top != nullptr) {
 		if (input < top->value) {
 			return searchNode(input, top->left);
@@ -183,6 +181,7 @@ bool searchNode(int input, Node* top) {
 }
 
 Node* findMaximumKey(Node* ptr)
+	// Внутренняя для delNode
 {
 	while (ptr->right != nullptr) {
 		ptr = ptr->right;
@@ -192,8 +191,6 @@ Node* findMaximumKey(Node* ptr)
 
 void delNode(int input, Node* top) {
 	// Пользовательская функция
-	// Вход: значение удаляемого узла, название дерева
-	// Выход: структура нового узла
 	if (top == nullptr) {
 		return;
 	}
@@ -234,13 +231,15 @@ int main()
 
 	Node* root = new Node;
 	root = nullptr;
-	root = addNode(5000, root);
-	for (int i = 27; i < 10000; i+=993) {
-		root = addNode(i / 10, root);
-		root = addNode(i % 10, root);
-	}
-
-	visualprintTree(root);
+	root = addNode(5, root);
+	root = addNode(7, root);
+	root = addNode(3, root);
+	root = addNode(4, root);
+	root = addNode(6, root);
+	printTree('p', root);
+	cout << endl << "Глубина дерева = " << depthTree(root) << endl;
+	if (searchNode(4, root)) cout << "Узел = 4 есть в дереве";
+	else cout << "Узла = 4 нет в дереве";
 
 	return 0;
 }
